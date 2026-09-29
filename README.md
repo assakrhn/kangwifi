@@ -30,5 +30,5 @@ const CONFIG = {
 
 ## Gambar contoh
 Letakkan lima gambar contoh di folder `assets/` dengan nama persis (huruf kecil semua):
-`contohont.png`, `contohssid.png`, `contohssidberhasil.png`, `contohpon.png`, `speedtest.png`.
+`contohont.png`, `contohssid.jpeg`, `contohssidberhasil.png`, `contohpon.jpeg`, `speedtest.png`.
 Gambar tampil sebelum tiap kolom upload. Jika file belum ada, bagian contoh otomatis disembunyikan.

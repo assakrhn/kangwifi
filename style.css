@@ -1,0 +1,41 @@
+:root{--ink:#0f2233;--teal:#0e8f8a;--amber:#ffb020;--bg:#eef3f6;--card:#fff;--line:#cfdbe3;--red:#c0392b}
+@media(prefers-color-scheme:dark){:root{--ink:#e8f0f5;--bg:#0c1822;--card:#142534;--line:#284256}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.top{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#0f2233;color:#fff}
+.top div{flex:1;line-height:1.3}.top img{height:38px}
+.bar{height:6px;background:var(--line)}#barfill{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .3s}
+.wrap{display:grid;grid-template-columns:230px 1fr;gap:20px;max-width:1080px;margin:0 auto;padding:16px}
+#steps{display:flex;flex-direction:column;gap:4px;position:sticky;top:12px;align-self:start}
+#steps button{text-align:left;padding:9px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;cursor:pointer;font:inherit}
+#steps button.cur{background:var(--teal);color:#fff;border-color:var(--teal);font-weight:600}
+#steps button.done::after{content:" ✓"}
+main{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;min-width:0}
+h1{font-size:2rem;margin:.2em 0}h2{margin-top:0;border-left:5px solid var(--teal);padding-left:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-weight:600;margin:10px 0}
+input,select,textarea{display:block;width:100%;margin-top:4px;padding:9px 10px;font:inherit;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+textarea{min-height:80px}input.bad,select.bad,textarea.bad{border-color:var(--red)}
+.pw{display:flex;gap:6px;align-items:center}.pw input{margin:4px 0 0}
+fieldset{border:1px solid var(--line);border-radius:8px}.r{display:inline-block;margin-right:16px}.r input{display:inline;width:auto}
+.btn{display:inline-block;padding:11px 20px;border:0;border-radius:8px;background:var(--teal);color:#fff;font:600 1rem inherit;cursor:pointer;text-decoration:none;margin:6px 0}
+.btn:disabled,.btn.dis{opacity:.4;pointer-events:none}.btn.danger{background:var(--red)}
+.ghost{padding:8px 12px;border:1px solid var(--teal);background:transparent;color:var(--teal);border-radius:8px;cursor:pointer;font:inherit}
+.top .ghost{color:#fff;border-color:#fff}
+.mission{border:2px dashed var(--amber);border-radius:12px;padding:14px 18px;margin:14px 0;background:rgba(255,176,32,.1)}
+.mission.ok{border-color:var(--teal);background:rgba(14,143,138,.1)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.big{font-size:1.4rem;font-weight:700;word-break:break-word}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px 18px;margin:14px 0}
+.ticks{list-style:none;padding:0;columns:2}.ticks li::before{content:"✓ ";color:var(--teal);font-weight:700}
+#check{columns:1}#check li.no::before{content:"✗ ";color:var(--red)}#check li.no{color:var(--red)}
+.warn{background:rgba(255,176,32,.18);border-left:4px solid var(--amber);padding:10px 14px;border-radius:6px;margin:12px 0}
+.alert{background:rgba(192,57,43,.12);border-left:4px solid var(--red);padding:10px 14px;border-radius:6px;margin-bottom:14px}
+.note{font-size:.9rem;opacity:.75}.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}th,td{padding:5px;text-align:left}td input,td select{margin:0}
+.up{border:1px dashed var(--line);border-radius:10px;padding:12px;margin:14px 0}.up b{display:block}
+.up img{max-width:100%;max-height:260px;border-radius:6px;margin:8px 0;display:block}.up small{display:block;opacity:.75}
+.nav{display:flex;justify-content:space-between;margin-top:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:9}.modal[hidden]{display:none}
+.box{background:var(--card);padding:22px;border-radius:12px;max-width:380px}
+@media(max-width:760px){.wrap{grid-template-columns:1fr;padding:10px}#steps{flex-direction:row;overflow-x:auto;position:static}#steps button{white-space:nowrap}
+.grid,.two{grid-template-columns:1fr}.ticks{columns:1}h1{font-size:1.5rem}}

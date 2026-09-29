@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Praktik Konfigurasi SSID pada ONT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <img src="assets/logo.png" alt="" id="logo" onerror="this.style.display='none'">
+  <div><b id="school"></b><br><small id="ptitle"></small></div>
+  <button class="ghost" id="btnReset" type="button">Reset Praktik</button>
+</header>
+<div class="bar"><div id="barfill"></div></div>
+<div class="wrap">
+  <nav id="steps" aria-label="Tahapan"></nav>
+  <main>
+    <div id="alert" class="alert" hidden></div>
+
+    <section data-s="0" class="hero">
+      <h1>PRAKTIK KONFIGURASI ONT</h1>
+      <div class="mission"><b>🎯 Misi</b><p>Identifikasi perangkat ONT yang digunakan di rumah, pelajari konfigurasi Wi-Fi yang tersedia, kemudian tambahkan satu SSID baru sesuai instruksi dan buktikan bahwa SSID tersebut berhasil digunakan.</p></div>
+      <div class="card"><h3>Target Praktik</h3>
+        <ul class="ticks"><li>Identifikasi ONT</li><li>Membaca konfigurasi Wi-Fi</li><li>Menambahkan SSID</li><li>Mengatur security</li><li>Menguji SSID</li><li>Membuat laporan</li></ul></div>
+      <p class="note">Data hanya ada di browser selama halaman terbuka. Tidak ada yang dikirim ke server.</p>
+      <button class="btn" data-go="1" type="button">MULAI PRAKTIK</button>
+    </section>
+
+    <section data-s="1" hidden>
+      <h2>Identitas</h2>
+      <div class="grid">
+        <label>Nama *<input data-f="nama" autocomplete="off"></label>
+        <label>Kelas *<input data-f="kelas" placeholder="XI TJKT 1"></label>
+        <label>NIS *<input data-f="nis" inputmode="numeric"></label>
+        <label>Tanggal Praktik *<input type="date" data-f="tgl"></label>
+      </div>
+    </section>
+
+    <section data-s="2" hidden>
+      <h2>Identifikasi ONT</h2>
+      <p>Amati perangkat ONT yang digunakan di rumah. Temukan informasi merk dan tipe/model pada label perangkat atau halaman administrasi ONT.</p>
+      <div class="grid">
+        <label>Merk ONT *<input data-f="merk"></label>
+        <label>Tipe / Model ONT *<input data-f="tipe"></label>
+      </div>
+      <div class="up" data-k="ont" data-t="Foto Perangkat ONT *" data-cap="1"></div>
+    </section>
+
+    <section data-s="3" hidden>
+      <h2>Konfigurasi Awal</h2>
+      <h3>Akses Halaman Konfigurasi</h3>
+      <p>Hubungkan perangkat ke jaringan ONT dan buka alamat administrasi perangkat sesuai informasi yang tersedia pada ONT atau dokumentasinya.</p>
+      <div class="grid">
+        <label>Alamat IP / URL Login *<input data-f="ip" placeholder="192.168.1.1"></label>
+        <label>Username Login *<input data-f="user" autocomplete="off"></label>
+        <label>Password Login *<span class="pw"><input type="password" data-f="pass" autocomplete="off"><button type="button" class="ghost tgl">Tampilkan</button></span></label>
+      </div>
+      <div class="warn">⚠️ Password login ONT adalah informasi sensitif. Password hanya digunakan untuk melengkapi aktivitas praktik dan tidak akan dicetak ke laporan PDF.</div>
+      <h3>SSID yang sudah ada</h3>
+      <p>Buka menu konfigurasi Wi-Fi/WLAN pada ONT. Catat SSID yang sudah tersedia dan jenis security yang digunakan. Baca konfigurasi aktual perangkatmu.</p>
+      <div class="scroll"><table><thead><tr><th>No</th><th>SSID</th><th>Security</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+      <button class="ghost" id="addRow" type="button">+ Tambah SSID</button>
+      <div class="up" data-k="cfg0" data-t="Screenshot Konfigurasi Wi-Fi *" data-h="Ambil screenshot halaman konfigurasi Wi-Fi/WLAN yang menunjukkan SSID yang tersedia."></div>
+      <h3>Kekuatan sinyal optik (Rx)</h3>
+      <p>Buka menu informasi optik / PON info / Optical Info pada ONT (nama menu berbeda tiap merk). Catat nilai <b>Rx Power</b>, yaitu daya cahaya yang diterima ONT dari kabel fiber, dalam satuan dBm. Nilainya biasanya negatif, misalnya -19.5.</p>
+      <div class="grid">
+        <label>Rx Power (dBm) *<input data-f="rx" inputmode="decimal" placeholder="-19.5"></label>
+        <label>Tx Power (dBm), jika ada<input data-f="tx" inputmode="decimal" placeholder="2.1"></label>
+      </div>
+      <div id="rxst" class="warn" hidden></div>
+      <div class="up" data-k="opt" data-t="Screenshot Informasi Optik *" data-h="Ambil screenshot halaman ONT yang menampilkan nilai Rx Power."></div>
+    </section>
+
+    <section data-s="4" hidden>
+      <h2>Tambah SSID</h2>
+      <div class="mission"><b>🎯 MISSION</b><h3>Tambahkan SSID baru pada ONT</h3>
+        <div class="two"><div><small>SSID BARU</small><div class="big" id="mSsid"></div></div>
+        <div><small>PASSWORD</small><div class="big"><span id="mPass">••••••••••••</span> <button type="button" class="ghost" id="tglMp">Tampilkan Password</button></div></div></div>
+        <p>Masukkan SSID dan password ini pada menu Wi-Fi/WLAN ONT, lalu simpan.</p></div>
+      <div class="grid">
+        <label>SSID yang berhasil dibuat *<input data-f="ssidNew"></label>
+        <label>Security *<select data-f="secNew" class="sec"></select></label>
+      </div>
+      <div class="up" data-k="cfg1" data-t="Bukti SSID Baru *" data-h="Ambil screenshot konfigurasi ONT yang menunjukkan bahwa SSID baru telah ditambahkan."></div>
+    </section>
+
+    <section data-s="5" hidden>
+      <h2>Pengujian</h2>
+      <p>Gunakan HP/laptop untuk mencari SSID baru yang telah dibuat, lalu hubungkan perangkat ke SSID tersebut.</p>
+      <div class="grid">
+        <fieldset><legend>SSID ditemukan? *</legend><label class="r"><input type="radio" name="found" data-f="found" value="Ya"> Ya</label><label class="r"><input type="radio" name="found" data-f="found" value="Tidak"> Tidak</label></fieldset>
+        <fieldset><legend>Berhasil terhubung? *</legend><label class="r"><input type="radio" name="conn" data-f="conn" value="Ya"> Ya</label><label class="r"><input type="radio" name="conn" data-f="conn" value="Tidak"> Tidak</label></fieldset>
+      </div>
+      <div class="up" data-k="test" data-t="Screenshot SSID Aktif *" data-h="Upload screenshot HP/laptop yang menunjukkan SSID baru telah ditemukan atau terhubung."></div>
+      <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>
+        <div id="trProb"><label>Apa masalah yang kamu temukan? *<textarea data-f="t1"></textarea></label>
+        <label>Apa langkah yang kamu lakukan untuk mengatasinya? *<textarea data-f="t2"></textarea></label></div>
+        <div id="trOk"><label>Apa yang akhirnya menyebabkan SSID dapat digunakan? *<textarea data-f="t3"></textarea></label></div></div>
+    </section>
+
+    <section data-s="6" hidden>
+      <h2>Refleksi</h2>
+      <label>1. Apa informasi yang paling penting yang kamu temukan dari ONT? *<textarea data-f="r1"></textarea></label>
+      <label>2. Apa kendala yang kamu alami ketika menambahkan SSID? *<textarea data-f="r2"></textarea></label>
+      <label>3. Apa yang kamu pelajari dari praktik ini? *<textarea data-f="r3"></textarea></label>
+    </section>
+
+    <section data-s="7" hidden>
+      <h2>Laporan</h2>
+      <div class="card"><h3>Pemeriksaan kelengkapan</h3><ul id="check" class="ticks"></ul></div>
+      <button class="btn" id="btnPdf" type="button" disabled>📄 GENERATE LAPORAN PDF</button>
+      <div id="done" class="mission ok" hidden>
+        <h2>✅ PRAKTIK SELESAI</h2><h3>Langkah berikutnya</h3>
+        <p>1. Download PDF</p><button class="btn" id="btnDl" type="button">DOWNLOAD LAPORAN</button>
+        <p>2. Upload PDF kepada guru</p><a class="btn dis" id="btnUp" target="_blank" rel="noopener">UPLOAD TUGAS</a>
+        <p class="note" id="upNote"></p>
+      </div>
+    </section>
+
+    <div class="nav" id="nav"><button class="ghost" id="prev" type="button">← Sebelumnya</button><button class="btn" id="next" type="button">Lanjut →</button></div>
+  </main>
+</div>
+<div class="modal" id="modal" hidden><div class="box"><p>Semua data praktik yang sedang dikerjakan akan dihapus dari browser. Lanjutkan?</p><button class="ghost" id="mNo" type="button">Batal</button> <button class="btn danger" id="mYes" type="button">Reset</button></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -112,6 +112,15 @@
         <fieldset><legend>SSID ditemukan? *</legend><label class="r"><input type="radio" name="found" data-f="found" value="Ya"> Ya</label><label class="r"><input type="radio" name="found" data-f="found" value="Tidak"> Tidak</label></fieldset>
         <fieldset><legend>Berhasil terhubung? *</legend><label class="r"><input type="radio" name="conn" data-f="conn" value="Ya"> Ya</label><label class="r"><input type="radio" name="conn" data-f="conn" value="Tidak"> Tidak</label></fieldset>
       </div>
+      <div id="spd" class="card" hidden><h3>⚡ Speedtest</h3>
+        <p>Perangkatmu sudah terhubung ke SSID baru, sekarang ukur kecepatan internetnya. Pastikan HP/laptop memakai SSID baru (matikan data seluler dan jangan pindah ke Wi-Fi lain), lalu buka salah satu situs berikut dan jalankan tes:</p>
+        <p><a href="https://www.speedtest.net" target="_blank" rel="noopener">speedtest.net</a> &nbsp;|&nbsp; <a href="https://fast.com" target="_blank" rel="noopener">fast.com</a> (upload dan ping ada di "Show more info")</p>
+        <div class="grid">
+          <label>Download (Mbps) *<input data-f="dl" inputmode="decimal"></label>
+          <label>Upload (Mbps) *<input data-f="ul" inputmode="decimal"></label>
+          <label>Ping / Latency (ms) *<input data-f="ping" inputmode="decimal"></label>
+        </div>
+        <div class="up" data-k="speed" data-t="Screenshot Hasil Speedtest *" data-h="Ambil screenshot layar hasil speedtest yang menampilkan angka download, upload, dan ping."></div></div>
       <div id="hpHint" class="warn"></div>
       <div class="up" data-k="hp" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
       <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>

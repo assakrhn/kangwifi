@@ -88,7 +88,7 @@ function fillFields() {
 
 function loginHint() {
   const q = [clean(S.f.merk), clean(S.f.tipe)].filter(Boolean).join(" ");
-  $("#loginHint").innerHTML = `🔎 Sebelum mengisi, cari alamat IP, username, dan password bawaan ONT di internet sesuai merk dan tipe ONT-mu. Contoh kata kunci: <b>${q ? q + " default username password" : "[merk] [tipe] default username password"}</b>. Jika tidak berhasil, cek label di badan ONT.`;
+  $("#loginHint").innerHTML = `🔎 Sebelum mengisi, cari alamat IP, username, dan password bawaan ONT di internet sesuai merk dan tipe ONT-mu. Contoh kata kunci: <b>${q ? q + " default username password" : "[merk] [tipe] default username password"}</b>. Jika tidak berhasil, cek label di badan ONT atau tanyakan pada orang tua/penyedia internet.`;
 }
 
 /* ---------- Navigation ---------- */
@@ -111,7 +111,7 @@ function go(n) {
   scrollTo({ top: 0 });
 }
 function trbl() {
-  $("#trbl").hidden = !(S.f.found === "Tidak" || S.f.conn === "Tidak");
+  $("#trbl").hidden = !(S.f.found === "Tidak" || S.f.conn === "Tidak"); $("#spd").hidden = S.f.conn !== "Ya";
 }
 
 /* ---------- Validasi ---------- */
@@ -132,6 +132,7 @@ function missing(step) {
   if (!step || step === 5) {
     if (!f.found || !f.conn) m.push([5, "Hasil pengujian"]);
     img("hp", "Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", 5);
+    if (f.conn === "Ya") { [["dl", "Download"], ["ul", "Upload"], ["ping", "Ping"]].forEach(([k, n]) => { if (num(f[k]) === null) m.push([5, `Speedtest: ${n} (isi angka)`]); }); img("speed", "Screenshot hasil speedtest", 5); }
     if (f.found === "Tidak" || f.conn === "Tidak") { need("t1", "Troubleshooting: masalah", 5); need("t2", "Troubleshooting: langkah", 5); }
   }
   if (!step || step === 6) { need("r1", "Refleksi 1", 6); need("r2", "Refleksi 2", 6); need("r3", "Refleksi 3", 6); }
@@ -149,7 +150,7 @@ function checklist() {
     ["SSID baru (maks. 32 karakter)", x => x[1].startsWith("SSID baru")], ["Nomor SSID pada ONT", x => x[1].startsWith("Nomor SSID")],
     ["Security SSID baru", x => x[1] === "Security SSID baru"], ["Screenshot konfigurasi SSID baru", x => x[1].startsWith("Screenshot konfigurasi SSID")],
     ["Hasil pengujian dan troubleshooting", x => x[1] === "Hasil pengujian" || x[1].startsWith("Troubleshooting")],
-    ["Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", x => x[1].startsWith("Screenshot daftar")], ["Refleksi", x => x[0] === 6]];
+    ["Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", x => x[1].startsWith("Screenshot daftar")], ["Hasil speedtest dan screenshot (jika terhubung)", x => x[1].startsWith("Speedtest") || x[1] === "Screenshot hasil speedtest"], ["Refleksi", x => x[0] === 6]];
   $("#check").innerHTML = items.map(([t, fn]) => `<li class="${m.some(fn) ? "no" : ""}">${t}</li>`).join("");
   const ok = m.length === 0; $("#next").disabled = !ok;
   show(ok ? "" : "Masih ada bagian yang belum diselesaikan: " + bad.join(", ") + ".");
@@ -182,7 +183,9 @@ function makePdf() {
     y += 2; pic("cfg0", "Screenshot konfigurasi awal");
     const ri = rxInfo(f.rx); kv("Rx Power ONT", clean(f.rx) + " dBm"); if (ri) kv("Penilaian", ri.t); y += 2; pic("opt", "Screenshot informasi optik (Rx Power)");
     head("C. Penambahan SSID"); kv("SSID baru", clean(f.ssidNew)); kv("Security", f.secNew); kv("Nomor SSID pada ONT", f.slot); kv("Password", "Tidak ditampilkan dalam laporan"); y += 2; pic("cfg1", "Screenshot SSID baru pada konfigurasi ONT");
-    head("D. Pengujian"); kv("SSID ditemukan", f.found); kv("Berhasil terhubung", f.conn); y += 2; pic("hp", "Screenshot daftar Wi-Fi di HP: SSID lama dan SSID baru");
+    head("D. Pengujian"); kv("SSID ditemukan", f.found); kv("Berhasil terhubung", f.conn);
+    if (f.conn === "Ya") { kv("Speedtest Download", clean(f.dl) + " Mbps"); kv("Speedtest Upload", clean(f.ul) + " Mbps"); kv("Speedtest Ping", clean(f.ping) + " ms"); }
+    y += 2; pic("hp", "Screenshot daftar Wi-Fi di HP: SSID lama dan SSID baru"); if (f.conn === "Ya") pic("speed", "Screenshot hasil speedtest");
     head("E. Troubleshooting");
     if (f.found === "Tidak" || f.conn === "Tidak") { text("Masalah yang ditemukan:", 11, true); text(f.t1); text("Langkah penyelesaian:", 11, true); text(f.t2); }
     else text("Tidak ada masalah pada pengujian. SSID ditemukan dan berhasil terhubung.");

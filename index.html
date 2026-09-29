@@ -52,22 +52,28 @@
       <h2>Konfigurasi Awal</h2>
       <h3>Akses Halaman Konfigurasi</h3>
       <p>Hubungkan perangkat ke jaringan ONT dan buka alamat administrasi perangkat sesuai informasi yang tersedia pada ONT atau dokumentasinya.</p>
+      <div class="warn" id="loginHint"></div>
       <div class="grid">
         <label>Alamat IP / URL Login *<input data-f="ip" placeholder="192.168.1.1"></label>
         <label>Username Login *<input data-f="user" autocomplete="off"></label>
         <label>Password Login *<span class="pw"><input type="password" data-f="pass" autocomplete="off"><button type="button" class="ghost tgl">Tampilkan</button></span></label>
       </div>
-      <div class="warn">⚠️ Password login ONT adalah informasi sensitif. Password hanya digunakan untuk melengkapi aktivitas praktik dan tidak akan dicetak ke laporan PDF.</div>
       <h3>SSID yang sudah ada</h3>
-      <p>Buka menu konfigurasi Wi-Fi/WLAN pada ONT. Catat SSID yang sudah tersedia dan jenis security yang digunakan. Baca konfigurasi aktual perangkatmu.</p>
+      <div class="warn">📍 Cari SSID yang sudah ada di menu <b>WLAN</b> pada halaman konfigurasi ONT (bisa juga bernama Wi-Fi, Wireless, atau Network &gt; WLAN). Catat nama SSID dan jenis security-nya persis seperti yang tertulis di sana. Biasanya hanya ada 1 SSID bawaan.</div>
       <div class="scroll"><table><thead><tr><th>No</th><th>SSID</th><th>Security</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
       <button class="ghost" id="addRow" type="button">+ Tambah SSID</button>
       <div class="up" data-k="cfg0" data-t="Screenshot Konfigurasi Wi-Fi *" data-h="Ambil screenshot halaman konfigurasi Wi-Fi/WLAN yang menunjukkan SSID yang tersedia."></div>
       <h3>Kekuatan sinyal optik (Rx)</h3>
-      <p>Buka menu informasi optik / PON info / Optical Info pada ONT (nama menu berbeda tiap merk). Catat nilai <b>Rx Power</b>, yaitu daya cahaya yang diterima ONT dari kabel fiber, dalam satuan dBm. Nilainya biasanya negatif, misalnya -19.5.</p>
+      <p><b>Rx Power</b> adalah daya cahaya yang diterima ONT dari kabel fiber, dalam satuan dBm. Nilainya biasanya negatif, misalnya -19.5.</p>
+      <div class="card"><b>Cara mencari nilai dBm di web konfigurasi ONT:</b>
+        <ol>
+          <li>Login ke halaman konfigurasi ONT.</li>
+          <li>Buka menu <b>Status</b>, <b>Network</b>, atau <b>WAN</b>. Nama submenu berbeda tiap merk: <b>Optical Info</b>, <b>PON Info</b>, <b>PON Information</b>, atau <b>Optic Module</b>.</li>
+          <li>Cari tulisan <b>Rx Power</b>, <b>RxPower</b>, atau <b>Receive Optical Power</b>, lalu catat angkanya.</li>
+          <li>Jika menunya tidak ketemu, cari di internet dengan kata kunci "[merk] [tipe] cek Rx power" atau "[merk] [tipe] optical info".</li>
+        </ol></div>
       <div class="grid">
         <label>Rx Power (dBm) *<input data-f="rx" inputmode="decimal" placeholder="-19.5"></label>
-        <label>Tx Power (dBm), jika ada<input data-f="tx" inputmode="decimal" placeholder="2.1"></label>
       </div>
       <div id="rxst" class="warn" hidden></div>
       <div class="up" data-k="opt" data-t="Screenshot Informasi Optik *" data-h="Ambil screenshot halaman ONT yang menampilkan nilai Rx Power."></div>
@@ -78,7 +84,7 @@
       <div class="mission"><b>🎯 MISSION</b><h3>Tambahkan SSID baru pada ONT</h3>
         <div class="two"><div><small>SSID BARU</small><div class="big" id="mSsid"></div></div>
         <div><small>PASSWORD</small><div class="big"><span id="mPass">••••••••••••</span> <button type="button" class="ghost" id="tglMp">Tampilkan Password</button></div></div></div>
-        <p>Masukkan SSID dan password ini pada menu Wi-Fi/WLAN ONT, lalu simpan.</p></div>
+        <p>Masukkan SSID dan password ini pada menu WLAN ONT, lalu simpan.</p></div>
       <div class="card"><h3>Ketentuan penamaan SSID baru</h3>
         <ul>
           <li>Format: <b>[Nama Depan/Panggilan] Bahagia</b>, contoh <b>Budi Bahagia</b>. Cukup nama depan atau panggilan, bukan nama lengkap.</li>
@@ -104,7 +110,6 @@
         <fieldset><legend>SSID ditemukan? *</legend><label class="r"><input type="radio" name="found" data-f="found" value="Ya"> Ya</label><label class="r"><input type="radio" name="found" data-f="found" value="Tidak"> Tidak</label></fieldset>
         <fieldset><legend>Berhasil terhubung? *</legend><label class="r"><input type="radio" name="conn" data-f="conn" value="Ya"> Ya</label><label class="r"><input type="radio" name="conn" data-f="conn" value="Tidak"> Tidak</label></fieldset>
       </div>
-      <div class="up" data-k="test" data-t="Screenshot SSID Aktif *" data-h="Upload screenshot HP/laptop yang menunjukkan SSID baru telah ditemukan atau terhubung."></div>
       <div id="hpHint" class="warn"></div>
       <div class="up" data-k="hp" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
       <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>

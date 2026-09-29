@@ -40,7 +40,7 @@ function build() {
   $("#slotSel").innerHTML = '<option value="">Pilih…</option>' + [1,2,3,4,5,6,7,8].map(n => `<option>SSID ${n}</option>`).join("");
   $$(".up").forEach(u => {
     const k = u.dataset.k;
-    u.innerHTML = `<b>${u.dataset.t}</b>${u.dataset.h ? `<small>${u.dataset.h}</small>` : ""}<div class="pv"></div>
+    u.innerHTML = `<b>${u.dataset.t}</b>${u.dataset.ex ? `<figure class="ex"><figcaption>Contoh:</figcaption><a href="assets/${u.dataset.ex}" target="_blank" rel="noopener"><img src="assets/${u.dataset.ex}" alt="Contoh" onerror="this.closest('figure').remove()"></a></figure>` : ""}${u.dataset.h ? `<small>${u.dataset.h}</small>` : ""}<div class="pv"></div>
       <input type="file" accept="image/*" ${u.dataset.cap ? 'capture="environment"' : ""} hidden>
       <button type="button" class="ghost pick"></button> <button type="button" class="ghost del" hidden>Hapus</button>`;
     const inp = $("input", u);

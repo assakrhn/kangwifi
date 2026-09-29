@@ -27,3 +27,8 @@ const CONFIG = {
 - **Ganti logo:** timpa `assets/logo.png` dengan logo sekolah (nama file sama). Jika file tidak ada, logo disembunyikan.
 - **Ganti URL pengumpulan:** isi `submissionUrl`. Jika kosong, tombol Upload Tugas nonaktif.
 - **Ganti password SSID:** ubah `ssidPassword`.
+
+## Gambar contoh
+Letakkan lima gambar contoh di folder `assets/` dengan nama persis (huruf kecil semua):
+`contohont.png`, `contohssid.png`, `contohssidberhasil.png`, `contohpon.png`, `speedtest.png`.
+Gambar tampil sebelum tiap kolom upload. Jika file belum ada, bagian contoh otomatis disembunyikan.

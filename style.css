@@ -39,3 +39,4 @@ table{width:100%;border-collapse:collapse}th,td{padding:5px;text-align:left}td i
 .box{background:var(--card);padding:22px;border-radius:12px;max-width:380px}
 @media(max-width:760px){.wrap{grid-template-columns:1fr;padding:10px}#steps{flex-direction:row;overflow-x:auto;position:static}#steps button{white-space:nowrap}
 .grid,.two{grid-template-columns:1fr}.ticks{columns:1}h1{font-size:1.5rem}}
+.ex{margin:8px 0;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}.ex figcaption{font-size:.85rem;opacity:.75}.ex img{margin:6px 0 0}

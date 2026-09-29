@@ -47,7 +47,7 @@
         <label>Merk ONT *<input data-f="merk"></label>
         <label>Tipe / Model ONT *<input data-f="tipe"></label>
       </div>
-      <div class="up" data-k="ont" data-t="Foto Perangkat ONT *" data-cap="1"></div>
+      <div class="up" data-k="ont" data-ex="contohont.png" data-t="Foto Perangkat ONT *" data-cap="1"></div>
       <h3>Akses Halaman Konfigurasi</h3>
       <p>Hubungkan perangkat ke jaringan ONT dan buka alamat administrasi perangkat sesuai informasi yang tersedia pada ONT atau dokumentasinya.</p>
       <div class="warn" id="loginHint"></div>
@@ -64,7 +64,7 @@
       <div class="warn">📍 Cari SSID yang sudah ada di menu <b>WLAN</b> pada halaman konfigurasi ONT (bisa juga bernama Wi-Fi, Wireless, atau Network &gt; WLAN). Catat nama SSID dan jenis security-nya persis seperti yang tertulis di sana. Biasanya hanya ada 1 SSID bawaan.</div>
       <div class="scroll"><table><thead><tr><th>No</th><th>SSID</th><th>Security</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
       <button class="ghost" id="addRow" type="button">+ Tambah SSID</button>
-      <div class="up" data-k="cfg0" data-t="Screenshot Konfigurasi Wi-Fi *" data-h="Ambil screenshot halaman konfigurasi Wi-Fi/WLAN yang menunjukkan SSID yang tersedia."></div>
+      <div class="up" data-k="cfg0" data-ex="contohssid.png" data-t="Screenshot Konfigurasi Wi-Fi *" data-h="Ambil screenshot halaman konfigurasi Wi-Fi/WLAN yang menunjukkan SSID yang tersedia."></div>
       <h3>Kekuatan sinyal optik (Rx)</h3>
       <p><b>Rx Power</b> adalah daya cahaya yang diterima ONT dari kabel fiber, dalam satuan dBm. Nilainya biasanya negatif, misalnya -19.5.</p>
       <div class="card"><b>Cara mencari nilai dBm di web konfigurasi ONT:</b>
@@ -78,7 +78,7 @@
         <label>Rx Power (dBm) *<input data-f="rx" inputmode="decimal" placeholder="-19.5"></label>
       </div>
       <div id="rxst" class="warn" hidden></div>
-      <div class="up" data-k="opt" data-t="Screenshot Informasi Optik *" data-h="Ambil screenshot halaman ONT yang menampilkan nilai Rx Power."></div>
+      <div class="up" data-k="opt" data-ex="contohpon.png" data-t="Screenshot Informasi Optik *" data-h="Ambil screenshot halaman ONT yang menampilkan nilai Rx Power."></div>
     </section>
 
     <section data-s="4" hidden>
@@ -102,7 +102,7 @@
         <label>Nomor SSID pada ONT *<select data-f="slot" id="slotSel"></select></label>
       </div>
       <div id="slotHint" class="warn"></div>
-      <div class="up" data-k="cfg1" data-t="Bukti SSID Baru *" data-h="Ambil screenshot konfigurasi ONT yang menunjukkan bahwa SSID baru telah ditambahkan."></div>
+      <div class="up" data-k="cfg1" data-ex="contohssidberhasil.png" data-t="Bukti SSID Baru *" data-h="Ambil screenshot konfigurasi ONT yang menunjukkan bahwa SSID baru telah ditambahkan."></div>
     </section>
 
     <section data-s="5" hidden>
@@ -120,7 +120,7 @@
           <label>Upload (Mbps) *<input data-f="ul" inputmode="decimal"></label>
           <label>Ping / Latency (ms) *<input data-f="ping" inputmode="decimal"></label>
         </div>
-        <div class="up" data-k="speed" data-t="Screenshot Hasil Speedtest *" data-h="Ambil screenshot layar hasil speedtest yang menampilkan angka download, upload, dan ping."></div></div>
+        <div class="up" data-k="speed" data-ex="speedtest.png" data-t="Screenshot Hasil Speedtest *" data-h="Ambil screenshot layar hasil speedtest yang menampilkan angka download, upload, dan ping."></div></div>
       <div id="hpHint" class="warn"></div>
       <div class="up" data-k="hp" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
       <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>

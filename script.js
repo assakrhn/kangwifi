@@ -35,6 +35,7 @@ function build() {
   $("#school").textContent = CONFIG.schoolName; $("#ptitle").textContent = CONFIG.practiceTitle;
   $("#steps").innerHTML = NAMES.map((n, i) => `<button type="button" data-go="${i + 1}">0${i + 1} ${n}</button>`).join("");
   $$(".sec").forEach(s => s.innerHTML = secOpts());
+  $("#slotSel").innerHTML = '<option value="">Pilih…</option>' + [1,2,3,4,5,6,7,8].map(n => `<option>SSID ${n}</option>`).join("");
   $$(".up").forEach(u => {
     const k = u.dataset.k;
     u.innerHTML = `<b>${u.dataset.t}</b>${u.dataset.h ? `<small>${u.dataset.h}</small>` : ""}<div class="pv"></div>
@@ -93,6 +94,10 @@ function go(n) {
   $("#barfill").style.width = Math.round(n / 7 * 100) + "%";
   if (n === 4) { if (!S.edited) S.f.ssidNew = autoSsid(); $("#mSsid").textContent = autoSsid(); fillFields(); }
   if (n === 3) rxShow();
+  if (n === 4) { const c = S.rows.filter(r => clean(r.s)).length;
+    $("#slotHint").textContent = `Kamu mencatat ${c} SSID awal, jadi SSID baru kemungkinan berada di slot SSID ${c + 1}. Periksa pada menu Wi-Fi/WLAN ONT (biasanya SSID 1-4 untuk 2.4 GHz dan SSID 5-8 untuk 5 GHz), lalu pilih nomor yang benar-benar kamu gunakan.`; }
+  if (n === 5) { const o = S.rows.filter(r => clean(r.s)).map(r => clean(r.s)).join(", ") || "(belum dicatat)";
+    $("#hpHint").textContent = `Buka daftar Wi-Fi di HP/laptop. Screenshot harus menampilkan SSID lama (${o}) dan SSID baru (${clean(S.f.ssidNew)}) sekaligus dalam satu tampilan.`; }
   if (n === 5) trbl();
   if (n === 7) checklist();
   scrollTo({ top: 0 });
@@ -116,10 +121,11 @@ function missing(step) {
     if (f.tx && num(f.tx) === null) m.push([3, "Daya optik Tx harus berupa angka"]);
     img("opt", "Screenshot informasi optik", 3);
   }
-  if (!step || step === 4) { need("ssidNew", "SSID baru", 4); need("secNew", "Security SSID baru", 4); img("cfg1", "Screenshot konfigurasi SSID baru", 4); }
+  if (!step || step === 4) { need("ssidNew", "SSID baru", 4); need("secNew", "Security SSID baru", 4); need("slot", "Nomor SSID pada ONT", 4);
+    if (clean(f.ssidNew).length > 32) m.push([4, "SSID baru maksimal 32 karakter"]); img("cfg1", "Screenshot konfigurasi SSID baru", 4); }
   if (!step || step === 5) {
     if (!f.found || !f.conn) m.push([5, "Hasil pengujian"]);
-    img("test", "Screenshot pengujian", 5);
+    img("test", "Screenshot pengujian", 5); img("hp", "Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", 5);
     if (f.found === "Tidak" || f.conn === "Tidak") { need("t1", "Troubleshooting: masalah", 5); need("t2", "Troubleshooting: langkah", 5); }
     else if (f.found === "Ya" && f.conn === "Ya") need("t3", "Troubleshooting: penyebab berhasil", 5);
   }
@@ -135,10 +141,10 @@ function checklist() {
     ["Foto ONT", x => x[1] === "Foto ONT"], ["Alamat IP / URL login", x => x[1].startsWith("Alamat")], ["Username", x => x[1] === "Username"],
     ["Password login sudah diisi", x => x[1].startsWith("Password")], ["SSID awal dan security sudah diisi", x => x[1].includes("SSID awal") || x[1].startsWith("Security SSID awal")],
     ["Screenshot konfigurasi awal", x => x[1].startsWith("Screenshot konfigurasi awal")], ["Daya optik Rx ONT", x => x[1].startsWith("Daya optik")], ["Screenshot informasi optik", x => x[1] === "Screenshot informasi optik"],
-    ["SSID baru", x => x[1] === "SSID baru"],
+    ["SSID baru (maks. 32 karakter)", x => x[1].startsWith("SSID baru")], ["Nomor SSID pada ONT", x => x[1].startsWith("Nomor SSID")],
     ["Security SSID baru", x => x[1] === "Security SSID baru"], ["Screenshot konfigurasi SSID baru", x => x[1].startsWith("Screenshot konfigurasi SSID")],
     ["Hasil pengujian dan troubleshooting", x => x[1] === "Hasil pengujian" || x[1].startsWith("Troubleshooting")],
-    ["Screenshot pengujian", x => x[1] === "Screenshot pengujian"], ["Refleksi", x => x[0] === 6]];
+    ["Screenshot pengujian", x => x[1] === "Screenshot pengujian"], ["Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", x => x[1].startsWith("Screenshot daftar")], ["Refleksi", x => x[0] === 6]];
   $("#check").innerHTML = items.map(([t, fn]) => `<li class="${m.some(fn) ? "no" : ""}">${t}</li>`).join("");
   const ok = m.length === 0; $("#btnPdf").disabled = !ok;
   show(ok ? "" : "Masih ada bagian yang belum diselesaikan: " + bad.join(", ") + ".");
@@ -170,8 +176,8 @@ function makePdf() {
     S.rows.filter(r => clean(r.s)).forEach((r, i) => { room(7); d.setFont("helvetica", "normal"); d.text(String(i + 1), M + 2, y); d.text(d.splitTextToSize(clean(r.s), 90)[0], M + 15, y); d.text(r.sec || "-", M + 110, y); y += 6; });
     y += 2; pic("cfg0", "Screenshot konfigurasi awal");
     const ri = rxInfo(f.rx); kv("Rx Power ONT", clean(f.rx) + " dBm"); if (clean(f.tx)) kv("Tx Power ONT", clean(f.tx) + " dBm"); if (ri) kv("Penilaian", ri.t); y += 2; pic("opt", "Screenshot informasi optik (Rx Power)");
-    head("C. Penambahan SSID"); kv("SSID baru", clean(f.ssidNew)); kv("Security", f.secNew); kv("Password", "Tidak ditampilkan dalam laporan"); y += 2; pic("cfg1", "Screenshot SSID baru pada konfigurasi ONT");
-    head("D. Pengujian"); kv("SSID ditemukan", f.found); kv("Berhasil terhubung", f.conn); y += 2; pic("test", "Screenshot pengujian");
+    head("C. Penambahan SSID"); kv("SSID baru", clean(f.ssidNew)); kv("Security", f.secNew); kv("Nomor SSID pada ONT", f.slot); kv("Password", "Tidak ditampilkan dalam laporan"); y += 2; pic("cfg1", "Screenshot SSID baru pada konfigurasi ONT");
+    head("D. Pengujian"); kv("SSID ditemukan", f.found); kv("Berhasil terhubung", f.conn); y += 2; pic("test", "Screenshot pengujian"); pic("hp", "Screenshot daftar Wi-Fi di HP: SSID lama dan SSID baru");
     head("E. Troubleshooting");
     if (f.found === "Ya" && f.conn === "Ya") { text("Penyebab SSID dapat digunakan:", 11, true); text(f.t3); }
     else { text("Masalah yang ditemukan:", 11, true); text(f.t1); text("Langkah penyelesaian:", 11, true); text(f.t2); }

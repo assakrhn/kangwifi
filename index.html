@@ -78,10 +78,21 @@
         <div class="two"><div><small>SSID BARU</small><div class="big" id="mSsid"></div></div>
         <div><small>PASSWORD</small><div class="big"><span id="mPass">••••••••••••</span> <button type="button" class="ghost" id="tglMp">Tampilkan Password</button></div></div></div>
         <p>Masukkan SSID dan password ini pada menu Wi-Fi/WLAN ONT, lalu simpan.</p></div>
+      <div class="card"><h3>Ketentuan penamaan SSID baru</h3>
+        <ul>
+          <li>Format: <b>[Nama Lengkap] Bahagia</b>, contoh <b>Budi Santoso Bahagia</b>.</li>
+          <li>Gunakan nama yang sama persis dengan yang kamu isi di Identitas. Huruf besar dan kecil tidak diubah.</li>
+          <li>Hanya ada satu spasi antar kata, tanpa spasi di awal atau akhir.</li>
+          <li>Panjang SSID maksimal 32 karakter.</li>
+          <li>Jangan mengubah atau menghapus SSID lama. Tambahkan satu SSID baru saja.</li>
+          <li>Password memakai yang ditampilkan di atas, jangan diganti.</li>
+        </ul></div>
       <div class="grid">
         <label>SSID yang berhasil dibuat *<input data-f="ssidNew"></label>
         <label>Security *<select data-f="secNew" class="sec"></select></label>
+        <label>Nomor SSID pada ONT *<select data-f="slot" id="slotSel"></select></label>
       </div>
+      <div id="slotHint" class="warn"></div>
       <div class="up" data-k="cfg1" data-t="Bukti SSID Baru *" data-h="Ambil screenshot konfigurasi ONT yang menunjukkan bahwa SSID baru telah ditambahkan."></div>
     </section>
 
@@ -93,6 +104,8 @@
         <fieldset><legend>Berhasil terhubung? *</legend><label class="r"><input type="radio" name="conn" data-f="conn" value="Ya"> Ya</label><label class="r"><input type="radio" name="conn" data-f="conn" value="Tidak"> Tidak</label></fieldset>
       </div>
       <div class="up" data-k="test" data-t="Screenshot SSID Aktif *" data-h="Upload screenshot HP/laptop yang menunjukkan SSID baru telah ditemukan atau terhubung."></div>
+      <div id="hpHint" class="warn"></div>
+      <div class="up" data-k="hp" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
       <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>
         <div id="trProb"><label>Apa masalah yang kamu temukan? *<textarea data-f="t1"></textarea></label>
         <label>Apa langkah yang kamu lakukan untuk mengatasinya? *<textarea data-f="t2"></textarea></label></div>

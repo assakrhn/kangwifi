@@ -88,7 +88,7 @@ function fillFields() {
 
 function loginHint() {
   const q = [clean(S.f.merk), clean(S.f.tipe)].filter(Boolean).join(" ");
-  $("#loginHint").innerHTML = `🔎 Sebelum mengisi, cari alamat IP, username, dan password bawaan ONT di internet sesuai merk dan tipe ONT-mu. Contoh kata kunci: <b>${q ? q + " default username password" : "[merk] [tipe] default username password"}</b>. Jika tidak berhasil, cek label di badan ONT atau tanyakan pada orang tua/penyedia internet.`;
+  $("#loginHint").innerHTML = `🔎 Sebelum mengisi, cari alamat IP, username, dan password bawaan ONT di internet sesuai merk dan tipe ONT-mu. Contoh kata kunci: <b>${q ? q + " default username password" : "[merk] [tipe] default username password"}</b>.`;
 }
 
 /* ---------- Navigation ---------- */

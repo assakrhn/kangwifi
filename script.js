@@ -84,6 +84,11 @@ function fillFields() {
   });
 }
 
+function loginHint() {
+  const q = [clean(S.f.merk), clean(S.f.tipe)].filter(Boolean).join(" ");
+  $("#loginHint").innerHTML = `🔎 Sebelum mengisi, cari alamat IP, username, dan password bawaan ONT di internet sesuai merk dan tipe ONT-mu. Contoh kata kunci: <b>${q ? q + " default username password" : "[merk] [tipe] default username password"}</b>. Jika tidak berhasil, cek label di badan ONT atau tanyakan pada orang tua/penyedia internet.`;
+}
+
 /* ---------- Navigation ---------- */
 function go(n) {
   cur = n; show("");
@@ -93,8 +98,8 @@ function go(n) {
   $$("#steps button").forEach((b, i) => { b.classList.toggle("cur", i + 1 === n); b.classList.toggle("done", i + 1 < n); });
   $("#barfill").style.width = Math.round(n / 7 * 100) + "%";
   if (n === 4) { if (!S.edited) S.f.ssidNew = autoSsid(); $("#mSsid").textContent = autoSsid(); fillFields(); }
-  if (n === 3) { rxShow(); const q = [clean(S.f.merk), clean(S.f.tipe)].filter(Boolean).join(" ");
-    $("#loginHint").innerHTML = `🔎 Sebelum mengisi, cari alamat IP, username, dan password bawaan ONT di internet sesuai merk dan tipe ONT-mu. Contoh kata kunci: <b>${q ? q + " default username password" : "[merk] [tipe] default username password"}</b>. Jika tidak berhasil, cek label di badan ONT atau tanyakan pada orang tua/penyedia internet.`; }
+  if (n === 3) rxShow();
+  if (n === 2) loginHint();
   if (n === 4) { const c = S.rows.filter(r => clean(r.s)).length;
     $("#slotHint").textContent = `Kamu mencatat ${c} SSID awal, jadi SSID baru kemungkinan berada di slot SSID ${c + 1}. Periksa pada menu Wi-Fi/WLAN ONT (biasanya SSID 1-4 untuk 2.4 GHz dan SSID 5-8 untuk 5 GHz), lalu pilih nomor yang benar-benar kamu gunakan.`; }
   if (n === 5) { const o = S.rows.filter(r => clean(r.s)).map(r => clean(r.s)).join(", ") || "(belum dicatat)";
@@ -112,9 +117,9 @@ function trbl() {
 function missing(step) {
   const f = S.f, m = [], need = (k, t, s) => { if (!clean(f[k])) m.push([s, t, k]); }, img = (k, t, s) => { if (!S.img[k]) m.push([s, t]); };
   if (!step || step === 1) { need("nama", "Nama", 1); need("panggilan", "Nama depan / panggilan", 1); need("kelas", "Kelas", 1); need("nis", "NIS", 1); need("tgl", "Tanggal praktik", 1); }
-  if (!step || step === 2) { need("merk", "Merk ONT", 2); need("tipe", "Tipe ONT", 2); img("ont", "Foto ONT", 2); }
+  if (!step || step === 2) { need("merk", "Merk ONT", 2); need("tipe", "Tipe ONT", 2); img("ont", "Foto ONT", 2);
+    need("ip", "Alamat IP / URL login", 2); need("user", "Username", 2); need("pass", "Password login sudah diisi", 2); }
   if (!step || step === 3) {
-    need("ip", "Alamat IP / URL login", 3); need("user", "Username", 3); need("pass", "Password login sudah diisi", 3);
     if (!S.rows.some(r => clean(r.s))) m.push([3, "SSID awal sudah diidentifikasi"]);
     if (S.rows.some(r => clean(r.s) && !r.sec)) m.push([3, "Security SSID awal sudah diisi"]);
     img("cfg0", "Screenshot konfigurasi awal (Bukti konfigurasi belum diunggah)", 3);
@@ -218,7 +223,7 @@ document.addEventListener("input", e => {
   if (t.dataset.f) { S.f[t.dataset.f] = t.value; t.classList.remove("bad"); if (t.dataset.f === "ssidNew") S.edited = true;
     if (t.dataset.f === "nama" && !S.pEdited) { S.f.panggilan = clean(t.value).split(" ")[0] || ""; $('[data-f="panggilan"]').value = S.f.panggilan; }
     if (t.dataset.f === "panggilan") S.pEdited = !!clean(t.value);
-    if ((t.dataset.f === "nama" || t.dataset.f === "panggilan") && !S.edited) S.f.ssidNew = autoSsid(); if (t.dataset.f === "found" || t.dataset.f === "conn") trbl(); if (t.dataset.f === "rx") rxShow(); }
+    if ((t.dataset.f === "nama" || t.dataset.f === "panggilan") && !S.edited) S.f.ssidNew = autoSsid(); if (t.dataset.f === "found" || t.dataset.f === "conn") trbl(); if (t.dataset.f === "rx") rxShow(); if (t.dataset.f === "merk" || t.dataset.f === "tipe") loginHint(); }
   if (t.dataset.r !== undefined) S.rows[+t.dataset.r][t.dataset.c] = t.value;
 });
 $("#addRow").onclick = () => { S.rows.push({ s: "", sec: "" }); renderRows(); };

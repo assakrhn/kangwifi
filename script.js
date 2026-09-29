@@ -106,12 +106,8 @@ function go(n) {
     $("#slotHint").textContent = `Kamu mencatat ${c} SSID awal, jadi SSID baru kemungkinan berada di slot SSID ${c + 1}. Periksa pada menu Wi-Fi/WLAN ONT (biasanya SSID 1-4 untuk 2.4 GHz dan SSID 5-8 untuk 5 GHz), lalu pilih nomor yang benar-benar kamu gunakan.`; }
   if (n === 5) { const o = S.rows.filter(r => clean(r.s)).map(r => clean(r.s)).join(", ") || "(belum dicatat)";
     $("#hpHint").textContent = `Buka daftar Wi-Fi di HP/laptop. Screenshot harus menampilkan SSID lama (${o}) dan SSID baru (${clean(S.f.ssidNew)}) sekaligus dalam satu tampilan.`; }
-  if (n === 5) trbl();
   if (n === 7) checklist();
   scrollTo({ top: 0 });
-}
-function trbl() {
-  $("#trbl").hidden = !(S.f.found === "Tidak" || S.f.conn === "Tidak"); $("#spd").hidden = S.f.conn !== "Ya";
 }
 
 /* ---------- Validasi ---------- */
@@ -130,10 +126,8 @@ function missing(step) {
   if (!step || step === 4) { need("ssidNew", "SSID baru", 4); need("secNew", "Security SSID baru", 4); need("slot", "Nomor SSID pada ONT", 4);
     if (clean(f.ssidNew).length > 32) m.push([4, "SSID baru maksimal 32 karakter"]); img("cfg1", "Screenshot konfigurasi SSID baru", 4); }
   if (!step || step === 5) {
-    if (!f.found || !f.conn) m.push([5, "Hasil pengujian"]);
     img("hp", "Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", 5);
-    if (f.conn === "Ya") { [["dl", "Download"], ["ul", "Upload"], ["ping", "Ping"]].forEach(([k, n]) => { if (num(f[k]) === null) m.push([5, `Speedtest: ${n} (isi angka)`]); }); img("speed", "Screenshot hasil speedtest", 5); }
-    if (f.found === "Tidak" || f.conn === "Tidak") { need("t1", "Troubleshooting: masalah", 5); need("t2", "Troubleshooting: langkah", 5); }
+    { [["dl", "Download"], ["ul", "Upload"], ["ping", "Ping"]].forEach(([k, n]) => { if (num(f[k]) === null) m.push([5, `Speedtest: ${n} (isi angka)`]); }); img("speed", "Screenshot hasil speedtest", 5); }
   }
   if (!step || step === 6) { need("r1", "Refleksi 1", 6); need("r2", "Refleksi 2", 6); need("r3", "Refleksi 3", 6); }
   return m;
@@ -149,8 +143,7 @@ function checklist() {
     ["Screenshot konfigurasi awal", x => x[1].startsWith("Screenshot konfigurasi awal")], ["Daya optik Rx ONT", x => x[1].startsWith("Daya optik")], ["Screenshot informasi optik", x => x[1] === "Screenshot informasi optik"],
     ["SSID baru (maks. 32 karakter)", x => x[1].startsWith("SSID baru")], ["Nomor SSID pada ONT", x => x[1].startsWith("Nomor SSID")],
     ["Security SSID baru", x => x[1] === "Security SSID baru"], ["Screenshot konfigurasi SSID baru", x => x[1].startsWith("Screenshot konfigurasi SSID")],
-    ["Hasil pengujian dan troubleshooting", x => x[1] === "Hasil pengujian" || x[1].startsWith("Troubleshooting")],
-    ["Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", x => x[1].startsWith("Screenshot daftar")], ["Hasil speedtest dan screenshot (jika terhubung)", x => x[1].startsWith("Speedtest") || x[1] === "Screenshot hasil speedtest"], ["Refleksi", x => x[0] === 6]];
+    ["Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", x => x[1].startsWith("Screenshot daftar")], ["Hasil speedtest dan screenshot", x => x[1].startsWith("Speedtest") || x[1] === "Screenshot hasil speedtest"], ["Refleksi", x => x[0] === 6]];
   $("#check").innerHTML = items.map(([t, fn]) => `<li class="${m.some(fn) ? "no" : ""}">${t}</li>`).join("");
   const ok = m.length === 0; $("#next").disabled = !ok;
   show(ok ? "" : "Masih ada bagian yang belum diselesaikan: " + bad.join(", ") + ".");
@@ -183,12 +176,12 @@ function makePdf() {
     y += 2; pic("cfg0", "Screenshot konfigurasi awal");
     const ri = rxInfo(f.rx); kv("Rx Power ONT", clean(f.rx) + " dBm"); if (ri) kv("Penilaian", ri.t); y += 2; pic("opt", "Screenshot informasi optik (Rx Power)");
     head("C. Penambahan SSID"); kv("SSID baru", clean(f.ssidNew)); kv("Security", f.secNew); kv("Nomor SSID pada ONT", f.slot); kv("Password", "Tidak ditampilkan dalam laporan"); y += 2; pic("cfg1", "Screenshot SSID baru pada konfigurasi ONT");
-    head("D. Pengujian"); kv("SSID ditemukan", f.found); kv("Berhasil terhubung", f.conn);
-    if (f.conn === "Ya") { kv("Speedtest Download", clean(f.dl) + " Mbps"); kv("Speedtest Upload", clean(f.ul) + " Mbps"); kv("Speedtest Ping", clean(f.ping) + " ms"); }
-    y += 2; pic("hp", "Screenshot daftar Wi-Fi di HP: SSID lama dan SSID baru"); if (f.conn === "Ya") pic("speed", "Screenshot hasil speedtest");
+    head("D. Pengujian");
+    { kv("Speedtest Download", clean(f.dl) + " Mbps"); kv("Speedtest Upload", clean(f.ul) + " Mbps"); kv("Speedtest Ping", clean(f.ping) + " ms"); }
+    y += 2; pic("hp", "Screenshot daftar Wi-Fi di HP: SSID lama dan SSID baru"); pic("speed", "Screenshot hasil speedtest");
     head("E. Troubleshooting");
-    if (f.found === "Tidak" || f.conn === "Tidak") { text("Masalah yang ditemukan:", 11, true); text(f.t1); text("Langkah penyelesaian:", 11, true); text(f.t2); }
-    else text("Tidak ada masalah pada pengujian. SSID ditemukan dan berhasil terhubung.");
+    if ((f.t1 || "").trim() || (f.t2 || "").trim()) { text("Masalah yang ditemukan:", 11, true); text(f.t1); text("Langkah penyelesaian:", 11, true); text(f.t2); }
+    else text("Tidak ada kendala yang dilaporkan.");
     head("F. Refleksi");
     [["1. Informasi terpenting dari ONT", f.r1], ["2. Kendala saat menambahkan SSID", f.r2], ["3. Yang dipelajari dari praktik ini", f.r3]].forEach(([q, a]) => { text(q, 11, true); text(a); y += 2; });
     const n = d.getNumberOfPages(), made = new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
@@ -226,7 +219,7 @@ document.addEventListener("input", e => {
   if (t.dataset.f) { S.f[t.dataset.f] = t.value; t.classList.remove("bad"); if (t.dataset.f === "ssidNew") S.edited = true;
     if (t.dataset.f === "nama" && !S.pEdited) { S.f.panggilan = clean(t.value).split(" ")[0] || ""; $('[data-f="panggilan"]').value = S.f.panggilan; }
     if (t.dataset.f === "panggilan") S.pEdited = !!clean(t.value);
-    if ((t.dataset.f === "nama" || t.dataset.f === "panggilan") && !S.edited) S.f.ssidNew = autoSsid(); if (t.dataset.f === "found" || t.dataset.f === "conn") trbl(); if (t.dataset.f === "rx") rxShow(); if (t.dataset.f === "merk" || t.dataset.f === "tipe") loginHint(); }
+    if ((t.dataset.f === "nama" || t.dataset.f === "panggilan") && !S.edited) S.f.ssidNew = autoSsid(); if (t.dataset.f === "rx") rxShow(); if (t.dataset.f === "merk" || t.dataset.f === "tipe") loginHint(); }
   if (t.dataset.r !== undefined) S.rows[+t.dataset.r][t.dataset.c] = t.value;
 });
 $("#addRow").onclick = () => { S.rows.push({ s: "", sec: "" }); renderRows(); };

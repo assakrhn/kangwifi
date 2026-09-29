@@ -102,18 +102,14 @@
         <label>Nomor SSID pada ONT *<select data-f="slot" id="slotSel"></select></label>
       </div>
       <div id="slotHint" class="warn"></div>
-      <div class="up" data-k="cfg1" data-ex="contohssidberhasil.png" data-t="Bukti SSID Baru *" data-h="Ambil screenshot konfigurasi ONT yang menunjukkan bahwa SSID baru telah ditambahkan."></div>
+      <div class="up" data-k="cfg1" data-ex="contohssid.png" data-t="Bukti SSID Baru *" data-h="Ambil screenshot konfigurasi ONT yang menunjukkan bahwa SSID baru telah ditambahkan."></div>
     </section>
 
     <section data-s="5" hidden>
       <h2>Pengujian</h2>
       <p>Gunakan HP/laptop untuk mencari SSID baru yang telah dibuat, lalu hubungkan perangkat ke SSID tersebut.</p>
-      <div class="grid">
-        <fieldset><legend>SSID ditemukan? *</legend><label class="r"><input type="radio" name="found" data-f="found" value="Ya"> Ya</label><label class="r"><input type="radio" name="found" data-f="found" value="Tidak"> Tidak</label></fieldset>
-        <fieldset><legend>Berhasil terhubung? *</legend><label class="r"><input type="radio" name="conn" data-f="conn" value="Ya"> Ya</label><label class="r"><input type="radio" name="conn" data-f="conn" value="Tidak"> Tidak</label></fieldset>
-      </div>
-      <div id="spd" class="card" hidden><h3>⚡ Speedtest</h3>
-        <p>Perangkatmu sudah terhubung ke SSID baru, sekarang ukur kecepatan internetnya. Pastikan HP/laptop memakai SSID baru (matikan data seluler dan jangan pindah ke Wi-Fi lain), lalu buka salah satu situs berikut dan jalankan tes:</p>
+      <div id="spd" class="card"><h3>⚡ Speedtest</h3>
+        <p>Setelah HP/laptop terhubung ke SSID baru, ukur kecepatan internetnya. Hasil speedtest ini menjadi bukti bahwa SSID baru berhasil digunakan. Pastikan HP/laptop memakai SSID baru (matikan data seluler dan jangan pindah ke Wi-Fi lain), lalu buka salah satu situs berikut dan jalankan tes:</p>
         <p><a href="https://www.speedtest.net" target="_blank" rel="noopener">speedtest.net</a> &nbsp;|&nbsp; <a href="https://fast.com" target="_blank" rel="noopener">fast.com</a> (upload dan ping ada di "Show more info")</p>
         <div class="grid">
           <label>Download (Mbps) *<input data-f="dl" inputmode="decimal"></label>
@@ -122,10 +118,11 @@
         </div>
         <div class="up" data-k="speed" data-ex="speedtest.png" data-t="Screenshot Hasil Speedtest *" data-h="Ambil screenshot layar hasil speedtest yang menampilkan angka download, upload, dan ping."></div></div>
       <div id="hpHint" class="warn"></div>
-      <div class="up" data-k="hp" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
-      <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>
-        <div id="trProb"><label>Apa masalah yang kamu temukan? *<textarea data-f="t1"></textarea></label>
-        <label>Apa langkah yang kamu lakukan untuk mengatasinya? *<textarea data-f="t2"></textarea></label></div></div>
+      <div class="up" data-k="hp" data-ex="contohssidberhasil.png" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
+      <div id="trbl" class="card"><h3>🔧 Troubleshooting (opsional)</h3>
+        <p class="note">Isi hanya jika kamu mengalami kendala saat praktik. Jika tidak ada kendala, biarkan kosong.</p>
+        <div id="trProb"><label>Apa masalah yang kamu temukan?<textarea data-f="t1"></textarea></label>
+        <label>Apa langkah yang kamu lakukan untuk mengatasinya?<textarea data-f="t2"></textarea></label></div></div>
     </section>
 
     <section data-s="6" hidden>

@@ -11,11 +11,11 @@ const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [..
 let S, cur = 0, pdfBlob = null, pdfName = "";
 
 function fresh() {
-  S = { f: { tgl: new Date().toISOString().slice(0, 10) }, img: {}, rows: [{ s: "", sec: "" }, { s: "", sec: "" }, { s: "", sec: "" }], edited: false };
+  S = { f: { tgl: new Date().toISOString().slice(0, 10) }, img: {}, rows: [{ s: "", sec: "" }, { s: "", sec: "" }, { s: "", sec: "" }], edited: false, pEdited: false };
   pdfBlob = null;
 }
 const clean = v => (v || "").replace(/\s+/g, " ").trim();
-const autoSsid = () => clean(S.f.nama) ? clean(S.f.nama) + " " + CONFIG.ssidSuffix : "";
+const autoSsid = () => clean(S.f.panggilan) ? clean(S.f.panggilan) + " " + CONFIG.ssidSuffix : "";
 const secOpts = () => '<option value="">Pilih…</option>' + SEC.map(x => `<option>${x}</option>`).join("");
 
 function num(v) { const n = parseFloat(String(v || "").replace(",", ".")); return isFinite(n) ? n : null; }
@@ -110,7 +110,7 @@ function trbl() {
 /* ---------- Validasi ---------- */
 function missing(step) {
   const f = S.f, m = [], need = (k, t, s) => { if (!clean(f[k])) m.push([s, t, k]); }, img = (k, t, s) => { if (!S.img[k]) m.push([s, t]); };
-  if (!step || step === 1) { need("nama", "Nama", 1); need("kelas", "Kelas", 1); need("nis", "NIS", 1); need("tgl", "Tanggal praktik", 1); }
+  if (!step || step === 1) { need("nama", "Nama", 1); need("panggilan", "Nama depan / panggilan", 1); need("kelas", "Kelas", 1); need("nis", "NIS", 1); need("tgl", "Tanggal praktik", 1); }
   if (!step || step === 2) { need("merk", "Merk ONT", 2); need("tipe", "Tipe ONT", 2); img("ont", "Foto ONT", 2); }
   if (!step || step === 3) {
     need("ip", "Alamat IP / URL login", 3); need("user", "Username", 3); need("pass", "Password login sudah diisi", 3);
@@ -216,7 +216,9 @@ document.addEventListener("click", e => {
 document.addEventListener("input", e => {
   const t = e.target;
   if (t.dataset.f) { S.f[t.dataset.f] = t.value; t.classList.remove("bad"); if (t.dataset.f === "ssidNew") S.edited = true;
-    if (t.dataset.f === "nama" && !S.edited) S.f.ssidNew = autoSsid(); if (t.dataset.f === "found" || t.dataset.f === "conn") trbl(); if (t.dataset.f === "rx") rxShow(); }
+    if (t.dataset.f === "nama" && !S.pEdited) { S.f.panggilan = clean(t.value).split(" ")[0] || ""; $('[data-f="panggilan"]').value = S.f.panggilan; }
+    if (t.dataset.f === "panggilan") S.pEdited = !!clean(t.value);
+    if ((t.dataset.f === "nama" || t.dataset.f === "panggilan") && !S.edited) S.f.ssidNew = autoSsid(); if (t.dataset.f === "found" || t.dataset.f === "conn") trbl(); if (t.dataset.f === "rx") rxShow(); }
   if (t.dataset.r !== undefined) S.rows[+t.dataset.r][t.dataset.c] = t.value;
 });
 $("#addRow").onclick = () => { S.rows.push({ s: "", sec: "" }); renderRows(); };

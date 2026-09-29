@@ -17,7 +17,7 @@ Buka `index.html` di browser, atau jalankan `python -m http.server 8000` lalu bu
 const CONFIG = {
   schoolName: "SMK Telkom Sandhy Putra Jakarta", // nama sekolah
   practiceTitle: "Praktik Konfigurasi SSID pada ONT",
-  ssidSuffix: "Bahagia",       // SSID = [Nama] + suffix
+  ssidSuffix: "Bahagia",       // SSID = [nama depan/panggilan] + suffix
   ssidPassword: "yaiyalah123", // password SSID baru
   submissionUrl: ""            // URL Google Form / Classroom
 };

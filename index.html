@@ -23,6 +23,8 @@
       <div class="mission"><b>🎯 Misi</b><p>Identifikasi perangkat ONT yang digunakan di rumah, pelajari konfigurasi Wi-Fi yang tersedia, kemudian tambahkan satu SSID baru sesuai instruksi dan buktikan bahwa SSID tersebut berhasil digunakan.</p></div>
       <div class="card"><h3>Target Praktik</h3>
         <ul class="ticks"><li>Identifikasi ONT</li><li>Membaca konfigurasi Wi-Fi</li><li>Menambahkan SSID</li><li>Mengatur security</li><li>Menguji SSID</li><li>Membuat laporan</li></ul></div>
+      <div class="card" id="tutorialCard"><h3>📖 Tutorial</h3><p>Sebelum mulai, pelajari dulu panduan langkah-langkah praktik pada tutorial berikut.</p>
+        <a class="ghost" id="tutorialLink" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">Buka Tutorial</a></div>
       <p class="note">Data hanya ada di browser selama halaman terbuka. Tidak ada yang dikirim ke server.</p>
       <button class="btn" data-go="1" type="button">MULAI PRAKTIK</button>
     </section>
@@ -114,8 +116,7 @@
       <div class="up" data-k="hp" data-t="Screenshot Daftar Wi-Fi di HP (SSID Lama dan Baru) *"></div>
       <div id="trbl" class="card" hidden><h3>🔧 Troubleshooting</h3>
         <div id="trProb"><label>Apa masalah yang kamu temukan? *<textarea data-f="t1"></textarea></label>
-        <label>Apa langkah yang kamu lakukan untuk mengatasinya? *<textarea data-f="t2"></textarea></label></div>
-        <div id="trOk"><label>Apa yang akhirnya menyebabkan SSID dapat digunakan? *<textarea data-f="t3"></textarea></label></div></div>
+        <label>Apa langkah yang kamu lakukan untuk mengatasinya? *<textarea data-f="t2"></textarea></label></div></div>
     </section>
 
     <section data-s="6" hidden>
@@ -128,7 +129,6 @@
     <section data-s="7" hidden>
       <h2>Laporan</h2>
       <div class="card"><h3>Pemeriksaan kelengkapan</h3><ul id="check" class="ticks"></ul></div>
-      <button class="btn" id="btnPdf" type="button" disabled>📄 GENERATE LAPORAN PDF</button>
       <div id="done" class="mission ok" hidden>
         <h2>✅ PRAKTIK SELESAI</h2><h3>Langkah berikutnya</h3>
         <p>1. Download PDF</p><button class="btn" id="btnDl" type="button">DOWNLOAD LAPORAN</button>

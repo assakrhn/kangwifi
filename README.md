@@ -19,7 +19,8 @@ const CONFIG = {
   practiceTitle: "Praktik Konfigurasi SSID pada ONT",
   ssidSuffix: "Bahagia",       // SSID = [nama depan/panggilan] + suffix
   ssidPassword: "yaiyalah123", // password SSID baru
-  submissionUrl: ""            // URL Google Form / Classroom
+  tutorialUrl: "https://smktelkomjakarta.my.canva.site/kangwifi", // link tutorial di halaman Home
+  submissionUrl: "https://drive.google.com/drive/folders/..."     // link pengumpulan tugas
 };
 ```
 - **Ganti nama sekolah:** ubah `schoolName` (juga tampil di footer PDF).

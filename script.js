@@ -3,7 +3,8 @@ const CONFIG = {
   practiceTitle: "Praktik Konfigurasi SSID pada ONT",
   ssidSuffix: "Bahagia",
   ssidPassword: "yaiyalah123",
-  submissionUrl: "" // isi URL Google Form / Classroom
+  tutorialUrl: "https://smktelkomjakarta.my.canva.site/kangwifi",
+  submissionUrl: "https://drive.google.com/drive/folders/1pLG98cdx0gWvGdce2AmyOPBKD89DPMvQ?usp=sharing"
 };
 const SEC = ["Open","WEP","WPA-PSK","WPA2-PSK","WPA/WPA2-PSK","WPA3","WPA2/WPA3","Lainnya"];
 const NAMES = ["Identitas","Identifikasi ONT","Konfigurasi Awal","Tambah SSID","Pengujian","Refleksi","Laporan"];
@@ -32,8 +33,9 @@ function show(msg) { const a = $("#alert"); a.hidden = !msg; a.innerHTML = msg |
 
 /* ---------- UI build ---------- */
 function build() {
+  $("#tutorialLink").href = CONFIG.tutorialUrl || "#"; $("#tutorialCard").hidden = !CONFIG.tutorialUrl;
   $("#school").textContent = CONFIG.schoolName; $("#ptitle").textContent = CONFIG.practiceTitle;
-  $("#steps").innerHTML = NAMES.map((n, i) => `<button type="button" data-go="${i + 1}">0${i + 1} ${n}</button>`).join("");
+  $("#steps").innerHTML = '<button type="button" data-go="0">00 Home</button>' + NAMES.map((n, i) => `<button type="button" data-go="${i + 1}">0${i + 1} ${n}</button>`).join("");
   $$(".sec").forEach(s => s.innerHTML = secOpts());
   $("#slotSel").innerHTML = '<option value="">Pilih…</option>' + [1,2,3,4,5,6,7,8].map(n => `<option>SSID ${n}</option>`).join("");
   $$(".up").forEach(u => {
@@ -94,8 +96,8 @@ function go(n) {
   cur = n; show("");
   $$("main > section").forEach(s => s.hidden = +s.dataset.s !== n);
   $("#nav").hidden = n === 0;
-  $("#next").hidden = n === 7;
-  $$("#steps button").forEach((b, i) => { b.classList.toggle("cur", i + 1 === n); b.classList.toggle("done", i + 1 < n); });
+  $("#next").textContent = n === 7 ? "📄 GENERATE LAPORAN PDF" : "Lanjut →"; $("#next").disabled = false;
+  $$("#steps button").forEach((b, i) => { b.classList.toggle("cur", i === n); b.classList.toggle("done", i > 0 && i < n); });
   $("#barfill").style.width = Math.round(n / 7 * 100) + "%";
   if (n === 4) { if (!S.edited) S.f.ssidNew = autoSsid(); $("#mSsid").textContent = autoSsid(); fillFields(); }
   if (n === 3) rxShow();
@@ -109,8 +111,7 @@ function go(n) {
   scrollTo({ top: 0 });
 }
 function trbl() {
-  const p = S.f.found === "Tidak" || S.f.conn === "Tidak", ok = S.f.found === "Ya" && S.f.conn === "Ya";
-  $("#trbl").hidden = !(p || ok); $("#trProb").hidden = !p; $("#trOk").hidden = p;
+  $("#trbl").hidden = !(S.f.found === "Tidak" || S.f.conn === "Tidak");
 }
 
 /* ---------- Validasi ---------- */
@@ -132,7 +133,6 @@ function missing(step) {
     if (!f.found || !f.conn) m.push([5, "Hasil pengujian"]);
     img("hp", "Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", 5);
     if (f.found === "Tidak" || f.conn === "Tidak") { need("t1", "Troubleshooting: masalah", 5); need("t2", "Troubleshooting: langkah", 5); }
-    else if (f.found === "Ya" && f.conn === "Ya") need("t3", "Troubleshooting: penyebab berhasil", 5);
   }
   if (!step || step === 6) { need("r1", "Refleksi 1", 6); need("r2", "Refleksi 2", 6); need("r3", "Refleksi 3", 6); }
   return m;
@@ -151,7 +151,7 @@ function checklist() {
     ["Hasil pengujian dan troubleshooting", x => x[1] === "Hasil pengujian" || x[1].startsWith("Troubleshooting")],
     ["Screenshot daftar Wi-Fi di HP (SSID lama dan baru)", x => x[1].startsWith("Screenshot daftar")], ["Refleksi", x => x[0] === 6]];
   $("#check").innerHTML = items.map(([t, fn]) => `<li class="${m.some(fn) ? "no" : ""}">${t}</li>`).join("");
-  const ok = m.length === 0; $("#btnPdf").disabled = !ok;
+  const ok = m.length === 0; $("#next").disabled = !ok;
   show(ok ? "" : "Masih ada bagian yang belum diselesaikan: " + bad.join(", ") + ".");
 }
 
@@ -184,8 +184,8 @@ function makePdf() {
     head("C. Penambahan SSID"); kv("SSID baru", clean(f.ssidNew)); kv("Security", f.secNew); kv("Nomor SSID pada ONT", f.slot); kv("Password", "Tidak ditampilkan dalam laporan"); y += 2; pic("cfg1", "Screenshot SSID baru pada konfigurasi ONT");
     head("D. Pengujian"); kv("SSID ditemukan", f.found); kv("Berhasil terhubung", f.conn); y += 2; pic("hp", "Screenshot daftar Wi-Fi di HP: SSID lama dan SSID baru");
     head("E. Troubleshooting");
-    if (f.found === "Ya" && f.conn === "Ya") { text("Penyebab SSID dapat digunakan:", 11, true); text(f.t3); }
-    else { text("Masalah yang ditemukan:", 11, true); text(f.t1); text("Langkah penyelesaian:", 11, true); text(f.t2); }
+    if (f.found === "Tidak" || f.conn === "Tidak") { text("Masalah yang ditemukan:", 11, true); text(f.t1); text("Langkah penyelesaian:", 11, true); text(f.t2); }
+    else text("Tidak ada masalah pada pengujian. SSID ditemukan dan berhasil terhubung.");
     head("F. Refleksi");
     [["1. Informasi terpenting dari ONT", f.r1], ["2. Kendala saat menambahkan SSID", f.r2], ["3. Yang dipelajari dari praktik ini", f.r3]].forEach(([q, a]) => { text(q, 11, true); text(a); y += 2; });
     const n = d.getNumberOfPages(), made = new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
@@ -197,7 +197,7 @@ function makePdf() {
     const safe = v => clean(v).replace(/\s/g, "-").replace(/[^A-Za-z0-9_-]/g, "");
     pdfName = `Laporan_ONT_${safe(f.nama)}_${safe(f.kelas)}.pdf`; pdfBlob = d.output("blob");
     download(); $("#done").hidden = false; show("");
-    const u = $("#btnUp"); if (CONFIG.submissionUrl) { u.href = CONFIG.submissionUrl; u.classList.remove("dis"); $("#upNote").textContent = ""; }
+    const u = $("#btnUp"); if (CONFIG.submissionUrl) { u.href = CONFIG.submissionUrl; u.classList.remove("dis"); $("#upNote").textContent = "Folder Google Drive akan terbuka di tab baru. Unggah file PDF laporanmu di sana."; }
     else { u.classList.add("dis"); $("#upNote").textContent = "Link pengumpulan belum dikonfigurasi oleh guru."; }
     $("#done").scrollIntoView({ behavior: "smooth" });
   } catch (e) { console.error(e); show("PDF belum berhasil dibuat. Pastikan semua gambar sudah selesai dimuat lalu coba kembali."); }
@@ -230,11 +230,12 @@ $("#addRow").onclick = () => { S.rows.push({ s: "", sec: "" }); renderRows(); };
 $("#tglMp").onclick = () => { const p = $("#mPass"), h = p.textContent.includes("•"); p.textContent = h ? CONFIG.ssidPassword : "••••••••••••"; $("#tglMp").textContent = h ? "Sembunyikan Password" : "Tampilkan Password"; };
 $("#prev").onclick = () => go(Math.max(0, cur - 1));
 $("#next").onclick = () => {
+  if (cur === 7) return makePdf();
   const m = missing(cur);
   if (m.length) { mark(cur); return show("Lengkapi dulu: " + m.map(x => x[1]).join(", ") + "."); }
   go(cur + 1);
 };
-$("#btnPdf").onclick = makePdf; $("#btnDl").onclick = download;
+$("#btnDl").onclick = download;
 $("#btnReset").onclick = () => $("#modal").hidden = false;
 $("#mNo").onclick = () => $("#modal").hidden = true;
 $("#mYes").onclick = () => { $("#modal").hidden = true; $$("input[type=file]").forEach(i => i.value = ""); init(); };
